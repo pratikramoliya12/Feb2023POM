@@ -2,6 +2,7 @@ package com.qa.qaboat.tests;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import com.qa.qaboat.utils.Constants;
 
 public class LoginPageTest extends BaseTest {
 
@@ -9,7 +10,7 @@ public class LoginPageTest extends BaseTest {
 	public void loginPageTitleTest() {
 		String actTitle = loginPage.getLoginPageTitle();
 		System.out.println("Login page title: " + actTitle);
-		Assert.assertEquals(actTitle, "Login - EpicDeal");
+		Assert.assertEquals(actTitle, Constants.LOGIN_PAGE_TITLE);
 	}
 	
 	@Test
@@ -19,13 +20,15 @@ public class LoginPageTest extends BaseTest {
 	
 	@Test
 	public void loginPageUrlTest() {
-		String loginUrl = loginPage.getLoginPageUrl();
-		System.out.println("Login page url is: " +loginUrl);
-		Assert.assertTrue(loginUrl.contains("/login"));
+		Assert.assertTrue(loginPage.getLoginPageUrl());
 	}
 	
 	@Test
-	public void loginTest() {
-		loginPage.doLogin("test1707@gmail.com", "Test@1707");
+	public void loginTest() throws InterruptedException {
+		accountsPage = loginPage.doLogin(prop.getProperty("username"), prop.getProperty("password"));
+		
+		String accUrl = accountsPage.getAccountsPageUrl();
+		System.out.println(accUrl);
+		Assert.assertTrue(accUrl.contains(Constants.ACCOUNTS_PAGE_URL));
 	}
 }
